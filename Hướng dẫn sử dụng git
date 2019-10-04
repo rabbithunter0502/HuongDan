@@ -1,31 +1,80 @@
-I.  Giới thiệu Git:
-    https://blog.duyetdev.com/2015/04/git-va-cac-khai-niem-co-ban.html#.VyM70PmLTDc
-    * Tóm tắt:
+I.Giới thiệu Git:
+    *Tóm tắt:
       - Git dùng để quản lý phiên bản code, rất thuận lợi trong làm việc nhóm thậm chí làm 1 mình.
         Git có nhiều trang hỗ trợ như: github.com, bitbucket.com, ... không phải git là chỉ riêng trang github, git giống như là 1 chuẩn
-        quản lý phiên bản, ngoài ra còn có SVN là 1 chuẩn khác để quản lý phiên bản (theo cách hiểu của t).
+        quản lý phiên bản, ngoài ra còn có SVN là 1 chuẩn khác để quản lý phiên bản.
       - Các khái niệm trong git:
         + Repository (kho): là thư mục. Thư mục trên github.com gọi là remote (xa) repository (kho), còn ở máy tính là local repository.
-        + Branch (nhánh): ví dụ t làm 1 phần trên 1 nhánh, m rẽ sang nhánh khác làm chức năng khác, sau này hộp lại (merge)
-        + Remote (máy chủ): khỏi giải thích, lát ví dụ
+        + Branch (nhánh): ví dụ t làm 1 phần trên 1 nhánh, m rẽ sang nhánh khác làm chức năng khác, sau này hợp lại (merge)
+        + Remote (máy chủ): 
         + add (thêm): sau khi làm gì đó thay đổi thì add (thêm) cái thay đổi đó vào
         + commit: chốt thay đổi
         + pull (kéo về): lấy code của thằng làm chung đã push (đẩy) lên.
         + push (đẩy): đưa code lên remote repository, nghĩa là đẩy lên cho tụi kia kéo về
-      - Ví dụ thực tế:
+II.Ví dụ thực tế:
+    *Cài đặt :
         + Tải git về cài vào máy: https://git-scm.com/
-        + Tiếp là phải tạo 1 remote repository (thư mục trên github.com) đó là chỗ lúc push code sẽ lên, repository đó có 1 đừng dẫn, đuôi là *.git.
-          ví du: https://github.com/Haosvit/QLPV.git. Việc tạo này phải tạo trên trang github.com, lên đó tìm nút tạo ("New repository").
-        + Tạo 1 thư mục để chứa code dưới máy tính. Thư mục này sẽ liên kết với cái thư mục trên github sau này (làm theo các bước dưới)
+        + Tiếp là phải tạo 1 remote repository (thư mục trên github.com) đó là chỗ lúc push code sẽ lên, repository đó có 1 đường dẫn, đuôi là *.git.
+          ví du: Trên trang github.com, tìm nút tạo ("New repository"), đặt tên repo là Demo, github sẽ trả về một đường link theo giao thức HTTP:
+          https://github.com/rabbithunter0502/Demo.git.
+        + Tạo 1 thư mục để chứa code dưới máy tính. Thư mục này sẽ liên kết với cái thư mục trên github sau này (làm theo các bước dưới) :
         + Khởi tạo git trong thư mục mới tạo: Bấm chuột phải chọn "Git bash here" để mở màn hình console. Gõ: git init
         + Liên kết nó với thư mục ở github.com: cũng ở màn hình consolde mới mở lên, gõ: git remote add origin <đường dẫn tới thư mục trên github.com>
-          ví dụ: git remote add origin https://github.com/Haosvit/QLPV.git
-        + Sau khi liên kết 2 thư mục, lấy hết nội dung trên thư mục ở github về, trên console, gõ: git pull origin master
-        + xong, đã lấy hết nội dung thư mục trên github về.
+          ví dụ: git remote add origin https://github.com/rabbithunter0502/Demo.git
+          origin là alias của https://github.com/rabbithunter0502/Demo.git, bạn có thể đặt tên bất kì cho alias này, kiểm tra file config sẽ thấy :
+          vim .git/config
+            [core]
+                repositoryformatversion = 0
+                filemode = false
+                bare = false
+                logallrefupdates = true
+                symlinks = false
+                ignorecase = true
+            [remote "origin"]
+                url = https://github.com/rabbithunter0502/Demo.git
+                fetch = +refs/heads/*:refs/remotes/origin/*
+     *Làm việc với project :
+        + Sau khi liên kết 2 thư mục, lấy hết nội dung trên thư mục ở github về: 
+            Lần đầu tiên :  Dùng lệnh git clone https://github.com/rabbithunter0502/Demo.git để lấy toàn bộ code về 
+                            Khi dùng lệnh này project này lưu ở vị trí folder khi gõ lệnh git init với tên thư mục mới là Demo
+                            Nếu muốn lưu ở thư mục có tên "thuMucBT" thì gõ lệnh "git clone https://github.com/rabbithunter0502/Demo.git thuMucBT"
+            Các lần làm việc tiếp theo : gõ trên bash tại thư mục đã khởi tạo git (git init): git pull origin master (get code from branch master) để kiểm tra xem có ai push "code mới" lên không, nếu có nó sẽ được lấy về thư mục đã khởi tạo trên máy
+            (dùng git status và git pull trước khi làm việc và trước khi commit code lên git để tránh conflict)
+        -Cơ bản :
         + Khi làm gì đó thay đổi trên thư mục ở máy nhà, phải ADD sau đó COMMIT sau đó PUSH lên github. Làm như sau:
-          ADD: mở git bash (màn hình console) lên, gõ: git add *
-          COMMIT: cũng trên bash, gõ: git commit -m "nội dụng đã thực hiện"
-                  trong đó cái trong dấu ngoặc kép là ghi chú của việc commit, cái này bắt buộc nhập
-          PUSH: cũng trên bash, gõ: git push origin master
-        + Khi ai đó push gì mới lên thì ở máy lấy về bằng cái: gõ trên bash tại thư mục đã khởi tạo git (git init): git pull origin master
-        + Hết, luyện tập bằng cách tạo 1 repo trống trên github cá nhân.
+          ADD: mở git bash (màn hình console) lên, gõ: git add * hoặc git add -a hoặc git add "tên file" 
+               ( ở đây thì bạn sửa file nào thì add file đấy vào, tránh tình trạng add* hay add -a (add all) code gây conflict cho project) 
+          COMMIT: cũng trên bash, gõ: git commit -m "nội dụng đã thực hiện" 
+                ("nội dụng đã thực hiện" :cái này bắt buộc nhập nội dung có thể là tên nhánh, tên task, mô tả cơ bản, ví dụ : -m "feature#002/LoginForm")      
+          PUSH: cũng trên bash, gõ: git push origin "tên nhánh"; ví dụ push lên nhánh master thì git push orign master
+        
+        -Phát triển :
+        + Khi làm việc trong dự án sẽ có rất nhiều task với một cơ số các teamMember, vấn đề ở đây sẽ là phải phân công các task phù hợp cho các teamMember để hoàn thành dự án
+        
+        + Phải tạo brand (Tạo các nhánh làm việc riêng cho các task) : không ảnh hưởng đến master, tại cùng một thời điểm có thể phát triển nhiều tính năng
+        + Master : chứa code của dự án sau khi được leader review
+        + Tách brand : tính năng feature#001 => sau khi hoàn thành task yêu cầu merg vào master :
+            -kiểm tra code : git status
+            -git pull origin master (lấy code mới nhất về)
+            -git check out -b feature#003-create-song-validate : tạo nhánh mới
+            -git branch để show nhánh 
+            -kiểm tra code : git status
+            -sau đó git pull về để lấy code mới nhất
+            -git add file vừa làm
+            -git commit -m"feature#003/Finish song form with validate"
+            -git push origin feature#003-create-song-validate
+            TRên github thì sẽ có pull request để tạo request merger code vào project (Create pull request : google key)
+            Sau khi tạo pull request thì người được request sẽ nhận được mail của github
+            Người reviewer sẽ xem và nếu ok nhập code vào master (xem ở file change)
+            **
+            Phát triển một nhánh khác đang được phát triển :
+            1.kéo tất cả các nhánh về local repo : git fetch
+            2.chuyển sang nhánh đang phát triển : git checkout "tên nhánh"
+            3.auto merge, automatic merge fail
+            4.Xử lý khi bị conflict code
+            -pull nhánh bị conflict về
+            -git commit -m "Merge Conflict: ListSong.xaml" => truy vết lại file đã sửa conflict để nếu còn conflict sẽ biết file nào đã sửa.
+            -Kiểm tra chéo trước khi merge qua tester và reviewer.
+            
+        
+
